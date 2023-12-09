@@ -14,7 +14,7 @@ DISCORD_TOKEN = os.getenv("DISCORD_TOKEN")
 DISCORD_GUILD = os.getenv("DISCORD_GUILD")
 CHANNEL_ID = int(os.getenv("DISCORD_CHANNEL_ID"))
 THUMBS_DOWN = ['👎', '👎🏼']
-ANNOUNCEMENT = """Odpada %album% %reactions% głosami %draw_msg%
+ANNOUNCEMENT = """Odpada **%album%** %reactions% głosami %draw_msg%
 Głosujemy do 18:00 jutro na album który ma odpaść (emotką 👎 ) i nie można zmieniać głosów
 **RUNDA %round%**"""
 DRAW_ANNOUNCEMENT = "(remis rostrzygnęła runda %draw_round%)"
