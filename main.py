@@ -1,3 +1,5 @@
+import asyncio
+from datetime import datetime
 from typing import Any, List
 
 import discord
@@ -17,6 +19,7 @@ Głosujemy do 18:00 jutro na album który ma odpaść (emotką 👎 ) i nie moż
 **RUNDA %round%**"""
 DRAW_ANNOUNCEMENT = "(remis rostrzygnęła runda %draw_round%)"
 INITIAL_LEN = 20
+HOUR = "18:00"
 
 
 def _get_intent() -> discord.Intents:
@@ -44,7 +47,15 @@ class Client(discord.Client):
     def run(self, *args: Any, **kwargs: Any) -> None:
         (super().run(self._token))
 
-    async def on_ready(self) -> None:
+    async def time_loop(self):
+        while 1:
+            await asyncio.sleep(60)
+            now = datetime.now()
+            current_time = now.strftime("%H:%M:%S")
+            if current_time.startswith(HOUR):
+                await self.calculate_results()
+
+    async def calculate_results(self) -> None:
         channel = self.get_channel(CHANNEL_ID)
         points: dict = {}
         albums: List[str] = []
@@ -78,6 +89,9 @@ class Client(discord.Client):
         albums.remove(removed_album)
         for album in sorted(albums):
             await channel.send(album)
+
+    async def on_ready(self) -> None:
+        await self.time_loop()
 
 
 client = Client(DISCORD_TOKEN, DISCORD_GUILD)
